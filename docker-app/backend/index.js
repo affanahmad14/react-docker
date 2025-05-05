@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3000;
+const dotenv = require('dotenv');
+dotenv.config(); // Umgebungsvariablen laden
 
 const PORT = process.env.API_PORT || 3000;
 
@@ -34,6 +35,6 @@ app.delete('/api/notes/:id', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server läuft unter http://localhost:${port}`);
+  console.log(`Server läuft unter http://localhost:${PORT}`);
 });
 

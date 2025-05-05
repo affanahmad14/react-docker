@@ -1,0 +1,24 @@
+# Node.js & Backend
+node_modules/
+package-lock.json
+
+# Umgebungsvariablen
+.env
+.env.local
+.env.production
+.env.development
+
+# SQLite Datenbank & Logs
+*.db
+*.sqlite
+*.sqlite-journal
+
+# Logs
+logs/
+*.log
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# VS Code
+.vscode/

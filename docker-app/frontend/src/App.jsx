@@ -7,7 +7,7 @@ function App() {
   const [notes, setNotes] = useState([]);
 
   // Backend-URL
-  const API_URL = 'http://localhost:3001/api/notes';
+  const API_URL = 'http://localhost:PORT/api/notes'; // PORT durch den tatsächlichen Port ersetzen
 
   // Notizen vom Server laden
   useEffect(() => {
