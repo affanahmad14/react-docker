@@ -2,9 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const dotenv = require('dotenv');
+const e = require('express');
 dotenv.config(); // Umgebungsvariablen laden
 
-const PORT = process.env.API_PORT || 3000;
+const port = process.env.API_PORT || 3000;
 
 app.use(cors()); // damit React auf die API zugreifen kann
 app.use(express.json());
@@ -35,6 +36,7 @@ app.delete('/api/notes/:id', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server läuft unter http://localhost:${PORT}`);
+  console.log(`Server läuft unter http://localhost:${port}`);
 });
+
 

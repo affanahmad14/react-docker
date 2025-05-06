@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import './index.css';
-import.meta.env.VITE_API_URL; 
+ 
 
 function App() {
   const [note, setNote] = useState('');
   const [notes, setNotes] = useState([]);
 
   // Backend-URL
-  const API_URL = 'http://localhost:PORT/api/notes'; // PORT durch den tatsächlichen Port ersetzen
+  const API_URL = import.meta.env.VITE_API_URL; // PORT durch den tatsächlichen Port ersetzen
+  
 
   // Notizen vom Server laden
   useEffect(() => {
@@ -15,7 +16,7 @@ function App() {
       .then(res => res.json())
       .then(data => setNotes(data))
       .catch(err => console.error('Fehler beim Laden:', err));
-  }, []);
+  }, [API_URL]); 
 
   // Neue Notiz hinzufügen
   const addNote = () => {
