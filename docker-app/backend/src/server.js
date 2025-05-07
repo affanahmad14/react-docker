@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const e = require('express');
 dotenv.config(); // Umgebungsvariablen laden
 
-const port = process.env.API_PORT || 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors()); // damit React auf die API zugreifen kann
 app.use(express.json());

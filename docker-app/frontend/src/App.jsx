@@ -16,7 +16,7 @@ function App() {
       .then(res => res.json())
       .then(data => setNotes(data))
       .catch(err => console.error('Fehler beim Laden:', err));
-  }, [API_URL]); 
+  }, []); 
 
   // Neue Notiz hinzufügen
   const addNote = () => {
