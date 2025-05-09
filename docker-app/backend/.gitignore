@@ -1,12 +1,9 @@
 # Node.js & Backend
 node_modules/
-package-lock.json
 
 # Umgebungsvariablen
 .env
-.env.local
-.env.production
-.env.development
+
 
 # SQLite Datenbank & Logs
 *.db

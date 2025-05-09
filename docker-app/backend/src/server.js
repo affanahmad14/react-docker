@@ -2,15 +2,20 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const dotenv = require('dotenv');
-const e = require('express');
+//const e = require('express');
 dotenv.config(); // Umgebungsvariablen laden
 
+
 const port = process.env.PORT || 3000;
+
+let notes = []; // In-Memory-Speicher (flüchtig)
 
 app.use(cors()); // damit React auf die API zugreifen kann
 app.use(express.json());
 
-let notes = []; // In-Memory-Speicher (flüchtig)
+app.listen(port, () => {
+console.log(`Server läuft unter http://localhost:${port}`);
+});
 
 // GET: Alle Notizen
 app.get('/api/notes', (req, res) => {
@@ -35,8 +40,6 @@ app.delete('/api/notes/:id', (req, res) => {
   res.status(204).send();
 });
 
-app.listen(port, () => {
-  console.log(`Server läuft unter http://localhost:${port}`);
-});
+
 
 
