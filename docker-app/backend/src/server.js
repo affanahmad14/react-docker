@@ -1,11 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const app = express();
-const dotenv = require('dotenv');
-//const e = require('express');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
 dotenv.config(); // Umgebungsvariablen laden
 
-
+const app = express();
 const port = process.env.PORT || 3000;
 
 let notes = []; // In-Memory-Speicher (flüchtig)
