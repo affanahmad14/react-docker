@@ -7,9 +7,9 @@ async function run() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
     INSERT INTO notes (title) VALUES
-    ('Test Note 1', 'This is a test note.'),
-    ('Test Note 2', 'This is another test note.'),
-    ('Test Note 3', 'This is yet another test note.');
+    ('Test Note 1'),
+    ('Test Note 2'),
+    ('Test Note 3');
     `);
 }
 run().catch(console.error);

@@ -1,4 +1,4 @@
-import logger from '../../config/logger.js'; // Logger importieren
+import logger from '../config/logger.js'; // Logger importieren
 import express from 'express'; // Express importieren
 import { testDbConnection } from '../db.js'; // Importiere die Funktion zum Testen der DB-Verbindung
 const router = express.Router(); // Router für die API erstellen
