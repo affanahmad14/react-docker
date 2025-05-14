@@ -1,9 +1,22 @@
-FROM node:lts-alpine 
+FROM node:lts-alpine AS builder
+RUN apk add --no-cache curl
+# Arbeitsverzeichnis im Container setzen
 WORKDIR /app
+# package.json und package-lock.json ins Arbeitsverzeichnis kopieren
 COPY package*.json ./
-RUN npm install --production
+# Abhängigkeiten installieren
+RUN npm ci --production
+# Restlichen Anwendungscode ins Arbeitsverzeichnis kopieren
 COPY . .
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
-EXPOSE 3000 
-CMD ["npm", "start"]
+# Port definieren, auf dem die API läuft
+EXPOSE 3000
+# Startkommando für die Anwendung definieren
+# shell command instead of exec form
+CMD sh -c "npm run initdb && npm start"
+
+
+
+
+
+
+

@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
-
+    "dev": "nodemon ./src/server.js",
+    "initdb": "node ./scripts/create_initial_schema.js"
   },
   "keywords": [],
   "author": "",
@@ -16,8 +16,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
-  
+    "express": "^5.1.0",
+    "pg": "^8.16.0",
+    "winston": "^3.17.0"
   }
-  
 }

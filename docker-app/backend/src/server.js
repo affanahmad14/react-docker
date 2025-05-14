@@ -3,13 +3,18 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import fs from 'fs/promises'
 import path from 'path';
+import healthRouter from './routes/health.js'; // Importiere den Health-Check-Router
+import logger from './config/logger.js'; // Importiere den Logger
+import { testDbConnection } from './db.js';
+import notesRouter from './routes/notes.js'; // Importiere den Notizen-Router
+
 
 dotenv.config(); // Umgebungsvariablen laden
 
 const app = express();
 const port = process.env.PORT || 3000;
 const router = express.Router();
-const dataDir = '/app/data';
+const dataDir = '/app/data';  //Eventuell anpassen
 const dataFilePath = path.join(dataDir, 'items.json');
 
 let notes = []; // In-Memory-Speicher (flüchtig)
@@ -52,36 +57,33 @@ async function saveData() {
 
 app.use(cors()); // damit React auf die API zugreifen kann
 app.use(express.json());
+app.use("/health", healthRouter);
+app.use("/notes", notesRouter); // Verwende den Notizen-Router
 
 
 
-// GET: Alle Notizen
-app.get('/api/notes', (req, res) => {
-  res.json(notes);
-});
 
-// POST: Neue Notiz hinzufügen
-app.post('/api/notes', async (req, res) => {
-  const { text } = req.body;
-  if (!text || !text.trim()) {
-    return res.status(400).json({ error: 'Text ist erforderlich' });
-  }
-  const newNote = { id: Date.now(), text: text.trim() };
-  notes.push(newNote);
-  await saveData(); // Daten speichern
-  res.status(201).json(newNote);
-});
 
-// DELETE: Notiz löschen
-app.delete('/api/notes/:id', async (req, res) => {
-  const id = parseInt(req.params.id);
-  notes = notes.filter(note => note.id !== id);
-  await saveData(); // Daten speichern
-  res.status(204).send();
-});
-
-app.listen(port, () => {
-  console.log(`Server läuft unter http://localhost:${port}`);
+app.listen(port, async () => {
+  logger.info('Starting backend API...'); // Verwende den Logger
+  logger.info('Database Configuration (received via ENV):', {
+    DB_HOST: process.env.DB_HOST,
+    DB_PORT: process.env.DB_PORT,
+    DB_USER: process.env.DB_USER,
+    DB_NAME: process.env.DB_NAME,
+    DB_PASSWORD: process.env.DB_PASSWORD ? '[REDACTED]' : 'N/A'
   });
+  logger.info('-------------------------------------------');
+  try {
+    await testDbConnection();
+    logger.info('Initial DB connection successful.');
+  } catch (err) {
+    logger.error('Initial DB connection failed. Exiting...');
+    process.exit(1);
+  }
+  logger.info(`Server läuft auf http://localhost:${port}`); // Verwende den Logger
+});
+
+
 
 
