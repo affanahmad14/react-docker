@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import './index.css';
-import.meta.env.VITE_API_URL = 'http://localhost:4002'; // PORT durch den tatsächlichen Port ersetzen
+
 
 
 function App() {
   const [note, setNote] = useState('');
   const [notes, setNotes] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   // Notizen vom Server laden
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/notes`)
+    fetch(`${API_URL}/api/notes`)
       .then(res => res.json())
       .then(data => setNotes(data))
       .catch(err => console.error('Fehler beim Laden:', err));
@@ -19,7 +20,7 @@ function App() {
   const addNote = () => {
     if (!note.trim()) return;
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/notes`, {
+    fetch(`${API_URL}/api/notes`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: note })
@@ -34,7 +35,7 @@ function App() {
 
   // Notiz löschen
   const deleteNote = (id) => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/notes/${id}`, { method: 'DELETE' })
+    fetch(`${API_URL}/api/notes/${id}`, { method: 'DELETE' })
       .then(() => setNotes(notes.filter(n => n.id !== id)))
       .catch(err => console.error('Fehler beim Löschen:', err));
   };
