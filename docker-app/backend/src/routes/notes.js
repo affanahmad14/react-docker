@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
         if (!text || !text.trim()) {
             return res.status(400).json({ error: 'Text ist erforderlich' });
         }
-        const newNote = await createItem({ title: text.trim() });
+        const newNote = await createItem({ text: text.trim() });
         res.status(201).json(newNote);
     } catch (error) {
         logger.error('Error creating note:', error);

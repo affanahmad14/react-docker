@@ -6,11 +6,11 @@ import './index.css';
 function App() {
   const [note, setNote] = useState('');
   const [notes, setNotes] = useState([]);
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;  // API_URL ist leer, also werden relative Pfade verwendet
 
   // Notizen vom Server laden
   useEffect(() => {
-    fetch(`${API_URL}/api/notes`)
+    fetch('/api/notes')  // Korrekte URL
       .then(res => res.json())
       .then(data => setNotes(data))
       .catch(err => console.error('Fehler beim Laden:', err));
@@ -20,7 +20,7 @@ function App() {
   const addNote = () => {
     if (!note.trim()) return;
 
-    fetch(`${API_URL}/api/notes`, {
+    fetch('/api/notes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: note })
@@ -28,7 +28,7 @@ function App() {
       .then(res => res.json())
       .then(() => {
         // Notizen neu laden
-        fetch(`${API_URL}/api/notes`)
+        fetch('/api/notes')  // Korrekte URL
           .then(res => res.json())
           .then(data => setNotes(data));
         setNote('');
@@ -38,7 +38,7 @@ function App() {
 
   // Notiz löschen
   const deleteNote = (id) => {
-    fetch(`${API_URL}/api/notes/${id}`, { method: 'DELETE' })
+    fetch(`/api/notes/${id}`, { method: 'DELETE' })
       .then(() => setNotes(notes.filter(n => n.id !== id)))
       .catch(err => console.error('Fehler beim Löschen:', err));
   };

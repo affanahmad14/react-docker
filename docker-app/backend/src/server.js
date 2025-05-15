@@ -16,8 +16,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/health", healthRouter);
-app.use("/notes", notesRouter);
+app.use("/api/notes", notesRouter);
+app.use("/api/health", healthRouter);
 
 // Start server
 app.listen(port, async () => {
