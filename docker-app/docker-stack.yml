@@ -2,11 +2,11 @@ version: '3.8'
 
 services:
   frontend:
-    image: affan617/frontend-app:latest
+    image: affan617/frontend:latest
     deploy:
       placement:
         constraints:
-          - node.labels.role == frontend        
+          - node.labels.role == worker1        
       replicas: 2
       update_config:
         parallelism: 1
@@ -27,11 +27,11 @@ services:
       - backend:
 
   backend:
-    image: affan617/backend-app:latest
+    image: affan617/backend:latest
     deploy:
       placement:
         constraints:
-          - node.labels.role == backend        
+          - node.labels.role == worker2        
       replicas: 2
       update_config:
         parallelism: 1
@@ -64,7 +64,7 @@ services:
       replicas: 1 
       placement:
         constraints:
-          - node.labels.role == database
+          - node.labels.role == worker3
     environment:
       POSTGRES_DB: notesdb
       POSTGRES_USER: postgres
