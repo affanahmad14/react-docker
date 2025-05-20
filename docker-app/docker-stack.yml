@@ -2,32 +2,42 @@ version: '3.8'
 
 services:
   frontend:
-    image: affan617/frontend:latest  # Image vorher bauen & pushen
+    image: affan617/frontend-app:latest
+    deploy:
+      placement:
+        constraints:
+          - node.labels.role == frontend        
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     ports:
-      - target: 80
-        published: 8080
-        protocol: tcp
-        mode: host
-    networks:
-      - app-network
+      - "8080:80"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/healthz.html"]
       interval: 10s
       timeout: 5s
       retries: 3
       start_period: 5s
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
+    networks:
+      - app-network
+    depends_on:
+      - backend:
 
   backend:
-    image: affan617/backend:latest  # Image vorher bauen & pushen
-    ports:
-      - target: 3000
-        published: 3000
-        protocol: tcp
-        mode: host
+    image: affan617/backend-app:latest
+    deploy:
+      placement:
+        constraints:
+          - node.labels.role == backend        
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     environment:
       DB_HOST: database
       DB_PORT: 5432
@@ -35,42 +45,47 @@ services:
       DB_NAME: notesdb
       DB_PASSWORD: mysecretpassword
       PORT: 3000
-    networks:
-      - app-network
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 10s
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-
+      start_period: 25s
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    depends_on:
+      database:
+        
   database:
     image: postgres:17-alpine
+    deploy:
+      replicas: 1 
+      placement:
+        constraints:
+          - node.labels.role == database
     environment:
       POSTGRES_DB: notesdb
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
     volumes:
       - db_data:/var/lib/postgresql/data
-    networks:
-      - app-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d notesdb"]
       interval: 10s
       timeout: 5s
       retries: 5
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-
-volumes:
-  db_data:
+      start_period: 10s
+    networks:
+      - app-network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
 networks:
   app-network:
     driver: overlay
+
+volumes:
+  pgdata:
+    driver: local
