@@ -1,1 +1,1 @@
-# react-docker
+21.05.2025: Ordner kubernetes erstellt mit dem md file der Hausaufgabe und einem screenshot.
