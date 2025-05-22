@@ -1,0 +1,21 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nginx-app-deployment
+  labels:
+    app: nginx-example
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-example
+  template:
+    metadata:
+      labels:
+        app: nginx-example
+    spec:
+      containers:
+        - name: nginx-container
+          image: affan617/nginx-example:v1
+          ports:
+            - containerPort: 80
